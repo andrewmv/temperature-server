@@ -1,11 +1,11 @@
-#!/bin/python
+#!/usr/bin/python
 # Read temperature from TI TMP102, and report it to MQTT broker
 # AMV 2020/09, modified from
 # http://www.pibits.net/code/tmp102-sensor-and-raspberry-pi-python-example.php
 
 import time
 import smbus
-import paho-mqtt
+import paho.mqtt.client as mqtt
 
 # I2C Config
 i2c_ch = 1
@@ -16,7 +16,7 @@ reg_temp = 0x00
 reg_config = 0x01
 
 # MQTT Config
-mqtt_broker = keke
+mqtt_broker = "keke"
 mqtt_port = 1883
 mqtt_topic = "baba/temp_sensor"
 
