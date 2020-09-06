@@ -1,0 +1,18 @@
+[Unit]
+Description=Temperature Server
+DefaultDependencies=yes
+After=network-online.target
+Wants=network-online.target
+IgnoreOnIsolate=true
+
+[Service]
+User=pi
+Group=pi
+ExecStart=/home/pi/Code/temperature_server/temperature_server.py
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target 
