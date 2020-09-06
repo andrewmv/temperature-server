@@ -5,7 +5,7 @@
 
 import time
 import smbus
-import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 
 # I2C Config
 i2c_ch = 1
@@ -18,7 +18,7 @@ reg_config = 0x01
 # MQTT Config
 mqtt_broker = "keke"
 mqtt_port = 1883
-mqtt_topic = "baba/temp_sensor"
+mqtt_topic = "network_telemetry/closet_environment/temp"
 
 # Calculate the 2's complement of a number
 def twos_comp(val, bits):
@@ -44,6 +44,10 @@ def read_temp():
 def to_fahrenheit(temp_c):
     return ( temp_c * 1.8 + 32 )
 
+#MQTT Publish
+def mqtt_pub(topic, message):
+    publish.single(topic, payload=message, hostname=mqtt_broker, port=mqtt_port)
+
 # Initialize I2C (SMBus)
 bus = smbus.SMBus(i2c_ch)
 
@@ -62,10 +66,12 @@ bus.write_i2c_block_data(i2c_address, reg_config, val)
 val = bus.read_i2c_block_data(i2c_address, reg_config, 2)
 print("New CONFIG:", val)
 
-# Print out temperature every second
+# Publish temperature every minute
 while True:
     temperature = read_temp()
-    print(round(temperature, 2), "C")
-    print(round(to_fahrenheit(temperature), 2), "F")
-    time.sleep(1)
+    #print(round(temperature, 2), "C")
+    mqtt_pub(mqtt_topic + "_c", round(temperature, 2))
+    #print(round(to_fahrenheit(temperature), 2), "F")
+    mqtt_pub(mqtt_topic + "_f", round(to_fahrenheit(temperature), 2))
+    time.sleep(60)
 
