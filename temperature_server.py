@@ -41,6 +41,9 @@ def read_temp():
 
     return temp_c
 
+def to_fahrenheit(temp_c):
+    return ( temp_c * 1.8 + 32 )
+
 # Initialize I2C (SMBus)
 bus = smbus.SMBus(i2c_ch)
 
@@ -63,5 +66,6 @@ print("New CONFIG:", val)
 while True:
     temperature = read_temp()
     print(round(temperature, 2), "C")
+    print(round(to_fahrenheit(temperature), 2), "F")
     time.sleep(1)
 
