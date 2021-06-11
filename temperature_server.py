@@ -16,7 +16,7 @@ reg_temp = 0x00
 reg_config = 0x01
 
 # MQTT Config
-mqtt_broker = "keke"
+mqtt_broker = "mqtt"
 mqtt_port = 1883
 mqtt_topic = "network_telemetry/closet_environment/temp"
 
